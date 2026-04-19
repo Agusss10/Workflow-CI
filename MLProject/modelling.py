@@ -10,7 +10,7 @@ import mlflow.sklearn
 mlflow.set_experiment("Latihan Credit Scoring")
 
 # load data hasil preprocessing
-df = pd.read_csv("preprocessing/credit_risk_preprocessing/data_processed.csv")
+df = pd.read_csv("credit_risk_preprocessing/data_processed.csv")
 
 # split data
 X = df.drop("loan_status", axis=1)
