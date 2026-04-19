@@ -5,10 +5,6 @@ from sklearn.metrics import accuracy_score
 import mlflow
 import mlflow.sklearn
 
-#set tracking
-# mlflow.set_tracking_uri("http://127.0.0.1:5000")
-mlflow.set_experiment("Latihan Credit Scoring")
-
 # load data hasil preprocessing
 df = pd.read_csv("credit_risk_preprocessing/data_processed.csv")
 
@@ -16,17 +12,20 @@ df = pd.read_csv("credit_risk_preprocessing/data_processed.csv")
 X = df.drop("loan_status", axis=1)
 y = df["loan_status"]
 
-X_train, X_test, y_train, y_test = train_test_split(X, y, test_size=0.2, random_state=42)
+X_train, X_test, y_train, y_test = train_test_split(
+    X, y, test_size=0.2, random_state=42
+)
 
-# training
-with mlflow.start_run():
-    model = SVC()
-    model.fit(X_train, y_train)
+# training model
+model = SVC()
+model.fit(X_train, y_train)
 
-    y_pred = model.predict(X_test)
-    acc = accuracy_score(y_test, y_pred)
+# evaluasi
+y_pred = model.predict(X_test)
+acc = accuracy_score(y_test, y_pred)
 
-    mlflow.log_metric("accuracy", acc)
-    mlflow.sklearn.log_model(model, "model")
+# logging ke MLflow
+mlflow.log_metric("accuracy", acc)
+mlflow.sklearn.log_model(model, "model")
 
-    print("Accuracy:", acc)
+print("Accuracy:", acc)
